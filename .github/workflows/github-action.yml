@@ -6,15 +6,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: SSH Remote Commands
-        uses: appleboy/ssh-action@v1.0.3
-        with: 
-          host: ${{secrets.REMOTE_IP}}
-          username: ${{secrets.NCP_ID}}
-          password: ${{secrets.NCP_PW}}
-          port: ${{secrets.REMOTE_SSH_PORT}}
-          script: |
-            whoami
-            ls -al
-            
+      - name: 최신 버전을 다운로드 받습니다.
+        uses: actions/checkout@v4.1.1
+
+      - name: 환경 변수를 설정합니다.
+        run: |
+          echo "NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL" >> .env
+          echo "HTTPS=$HTTPS" >> .env
+        env:
+          NEXT_PUBLIC_SERVER_URL: ${{ secret.NEXT_PUBLIC_SERVER_URL }}
+          HTTPS: ${{ secret.HTTPS }}
+
+      - name: 도커 이미지를 생성하고 도커 허브에 업로드합니다.
+        run: |
+          docker login -u $DOCKER_ID -p $DOCKER_PW
+          docker build -t bbangle-frontend ./
+          docker push $DOCKER_REPO
+        env:
+          DOCKER_ID: ${{ secret.DOCKER_ID }}
+          DOCKER_PW: ${{ secret.DOCKER_PW }}
+          DOCKER_REPO: ${{ secret.DOCKER_REPO }}
+        
         
