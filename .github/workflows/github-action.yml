@@ -11,7 +11,7 @@ jobs:
         with: 
           host: ${{secrets.REMOTE_IP}}
           username: ${{secrets.NCP_ID}}
-          passwrod: ${{secrets.NCP_PW}}
+          password: ${{secrets.NCP_PW}}
           port: ${{secrets.REMOTE_SSH_PORT}}
           script: |
             whoami
