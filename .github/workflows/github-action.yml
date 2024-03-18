@@ -1,0 +1,31 @@
+name: GitHub Actions Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소의 코드를 내려받습니다.
+        uses: actions/checkout@v4.1.1
+
+      - name: Node.js 환경을 세팅합니다.
+        uses: actions/setup-node@v4.0.2
+
+      - name: 환경 변수를 설정합니다.
+        run: |
+          echo "NCP_ID=$NCP_ID" >> .env
+          echo "NCP_PW=$NCP_PW" >> .env
+        env:
+          NCP_ID: ${{ secrets.NCP_ID }}
+          NCP_PW: ${{ secrets.NCP_PW }}
+
+      - name: 패키지를 설치합니다.
+        run: npm ci
+
+      - name: 빌드합니다.
+        run: npm run build
+
+      - name: 빌드 결과물을 출력합니다.
+        run: ls -al
+        
