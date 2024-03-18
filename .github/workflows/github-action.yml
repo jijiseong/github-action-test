@@ -14,8 +14,8 @@ jobs:
           echo "NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL" >> .env
           echo "HTTPS=$HTTPS" >> .env
         env:
-          NEXT_PUBLIC_SERVER_URL: ${{ secret.NEXT_PUBLIC_SERVER_URL }}
-          HTTPS: ${{ secret.HTTPS }}
+          NEXT_PUBLIC_SERVER_URL: ${{ secrets.NEXT_PUBLIC_SERVER_URL }}
+          HTTPS: ${{ secrets.HTTPS }}
 
       - name: 도커 이미지를 생성하고 도커 허브에 업로드합니다.
         run: |
@@ -23,8 +23,8 @@ jobs:
           docker build -t bbangle-frontend ./
           docker push $DOCKER_REPO
         env:
-          DOCKER_ID: ${{ secret.DOCKER_ID }}
-          DOCKER_PW: ${{ secret.DOCKER_PW }}
-          DOCKER_REPO: ${{ secret.DOCKER_REPO }}
+          DOCKER_ID: ${{ secrets.DOCKER_ID }}
+          DOCKER_PW: ${{ secrets.DOCKER_PW }}
+          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
         
         
